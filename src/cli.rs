@@ -74,6 +74,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                 .value_name("PORT")
                 .help("Sets the port of the senseid instance")
                 .takes_value(true),
+
         )
         .subcommand(
             App::new("init")
@@ -216,6 +217,12 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .subcommand(App::new("nodeinfo").about("see information about your node"))
         .get_matches();
 
+    let endpoint = if matches.is_present("dev") {
+        "http://0.0.0.0:5401"
+    } else {
+        "http://0.0.0.0:3000"
+    };
+
     let (command, command_args) = matches.subcommand().unwrap();
 
     let host = matches.value_of("host").unwrap_or("127.0.0.1");
@@ -257,6 +264,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         let macaroon_hex_str = hex_utils::hex_str(&macaroon_raw);
 
         let channel = Channel::from_shared(endpoint.to_string())?
+
             .connect()
             .await?;
         let macaroon = MetadataValue::from_str(&macaroon_hex_str)?;

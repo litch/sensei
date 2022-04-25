@@ -218,7 +218,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let (command, command_args) = matches.subcommand().unwrap();
 
-    let host = matches.value_of("host").unwrap_or("127.0.0.1");
+    let host = matches.value_of("host").unwrap_or("http://127.0.0.1");
     let port = matches.value_of("port").unwrap_or("5401");
     let endpoint = format!("{}:{}", host, port);
 
